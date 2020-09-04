@@ -8,10 +8,11 @@ import './css/create_schedule_form.css'
 class CreateSchedule extends Component {
 	constructor(props){
 		super(props)
-		this.state = {enableDate : false}
+		this.state = {enableDate : false, 'schedule-type' : 'default'}
 
 		// You have to bind the events yourself
 		this.onChange = this.onChange.bind(this)
+		this.onSubmit = this.onSubmit.bind(this)
 	}
 
 	componentWillMount(){
@@ -22,14 +23,51 @@ class CreateSchedule extends Component {
 
 	}
 
+	onSubmit(e) {
+		e.preventDefault()
+
+		console.log(this.state)
+		var schedule_name = this.state['schedule-name']
+		var schedule_type = this.state['schedule-type']
+		var period_from = this.state['schedule-time-from'] 
+		var period_to = this.state['schedule-time-to']
+
+		var formData = new FormData()
+		formData.append('name', schedule_name)
+		formData.append('type', schedule_type)
+		formData.append('from', period_from)
+		formData.append('to', period_to)
+
+		axios({
+			method : 'post',
+			data : formData,
+			url : 'http://localhost:8080/scheduler/create',
+			headers : {
+				'Content-Type' : 'multipart/form-data'
+			}
+		}).then((response) => {
+			if(response.data == 'default_exists'){
+				alert('There can only be one default schedule, you can only modify it or delete then recreate')
+			}else if(response.data == 'success'){
+				alert('The schedule has been added successfully')
+			}else if(response.data == 'fail'){
+				alert('Some problem occurred while inserting this schedule, please try again later')
+			}
+		}).catch((err) => {
+			console.log(err)
+		})
+	}
+
 	onChange(e) {
 		this.setState({[e.target.name] : e.target.value})
 
 		if(e.target.name == 'schedule-type'){
 			if(e.target.value == 'default'){
 				this.setState({enableDate : false})
+				this.setState({'schedule-type' : 'default'})
 			}else{
 				this.setState({enableDate : true})
+				this.setState({'schedule-type' : 'periodic'})
 			}
 		}
 	}
@@ -66,6 +104,8 @@ class CreateSchedule extends Component {
 							</td>
 						</tr>
 					</table>
+
+					<input type='submit' value='Add Schedule' class='btn btn-primary' id='submit'/>
 				</form>
 			</div>
 		)

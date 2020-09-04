@@ -14,9 +14,17 @@
 	margin-bottom : 20px;
 }
 
+#create-schedule #submit{
+	font-family : monospace;
+	font-style : bold;
+	font-size : 20px;
+	margin-bottom : 0;
+}
+
 #create-schedule label{
 	float : left;
 	font-weight : bolder;
+	text-decoration : underline;
 	font-family : monospace;
 	padding : 8px;
 	color : red;

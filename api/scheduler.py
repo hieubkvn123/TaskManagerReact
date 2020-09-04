@@ -26,11 +26,14 @@ def create_schedule():
         my_docs['type'] = request.form['type']
 
         ### If this is not a default schedule ###
+        print(request.form['type'])
         if(request.form['type'] != 'default'):
-            my_docs['period']  = request.form['period']
+            my_docs['from']  = request.form['from']
+            my_docs['to'] = request.form['to']
         else: ### If this is a default schedule ### 
             ### Check if there is any default schedules ###
-            count = my_collection.count_documents(filter={})
+            count = my_collection.count_documents(filter={'type' : 'default'})
+            print(count)
             if(count >= 1):
                 print('Cannot insert another default schedule')
                 return 'default_exists'
