@@ -6,6 +6,7 @@
 	padding : 50px;
 	background-color : #001641;
 	border-radius : 50px;
+	box-shadow : 10px 25px #00161780;
 }
 
 #create-schedule input, select{
