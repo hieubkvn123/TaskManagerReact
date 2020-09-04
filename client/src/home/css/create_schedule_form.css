@@ -1,0 +1,34 @@
+#create-schedule {
+	width : 40%;
+	float : right;
+	margin-right : 100px;
+	margin-top : 250px;
+	padding : 50px;
+}
+
+#create-schedule input{
+	width : 100%;
+	margin-top : 20px;
+	margin-bottom : 20px;
+}
+
+#create-schedule label{
+	float : left;
+	font-weight : bolder;
+	font-family : monospace;
+	padding : 8px;
+}
+
+#create-schedule select {
+	appearance : none;
+	-webkit-appearance : none;
+}
+
+#schedule-time-table label{
+	padding : 12px;
+}
+
+.date-input {
+	width : 100%;
+	margin-left : 100px;
+}
