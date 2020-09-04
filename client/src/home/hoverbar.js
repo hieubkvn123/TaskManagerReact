@@ -8,7 +8,20 @@ class HoverNavbar extends Component {
 	}
 
 	componentWillMount() {
-		
+		const headers = {
+			method : 'post',
+			mode : 'cors',
+			cache : 'no-cache',
+			credentials : 'same-origin',
+			headers : {
+				'Content-Type' : 'application/json'
+			}
+		}
+
+		fetch('http://localhost:8080/scheduler/list', headers)
+			.then(data => {
+				console.log(data)
+			})
 	}
 
 	componentWillUnmount() {

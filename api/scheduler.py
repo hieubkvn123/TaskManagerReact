@@ -42,3 +42,12 @@ def create_schedule():
             return 'success'
         else:
             return 'fail'
+
+@scheduler.route('/list', methods = ['POST'])
+def list():
+    my_collection = db['Schedules']
+    all_docs = my_collection.find({})
+
+    print(all_docs)
+
+    return str(all_docs)
