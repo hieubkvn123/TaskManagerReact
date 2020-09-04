@@ -2,6 +2,17 @@
   text-align: center;
 }
 
+.bg{
+	background-image : url('http://localhost:8080/static/img/background.jpg');
+	width : 100%;
+	height : 100%;
+	position : absolute;
+	background-repeat : no-repeat;
+	background-size : cover;
+	background-position : center center;
+	z-index:-10;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

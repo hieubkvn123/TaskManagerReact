@@ -8,7 +8,10 @@ import './css/create_schedule_form.css'
 class CreateSchedule extends Component {
 	constructor(props){
 		super(props)
-		this.state = {enableDate : false} 
+		this.state = {enableDate : false}
+
+		// You have to bind the events yourself
+		this.onChange = this.onChange.bind(this)
 	}
 
 	componentWillMount(){
@@ -22,8 +25,6 @@ class CreateSchedule extends Component {
 	onChange(e) {
 		this.setState({[e.target.name] : e.target.value})
 
-		console.log(e.target.name)
-		console.log(e.target.value)
 		if(e.target.name == 'schedule-type'){
 			if(e.target.value == 'default'){
 				this.setState({enableDate : false})
@@ -65,7 +66,6 @@ class CreateSchedule extends Component {
 							</td>
 						</tr>
 					</table>
-					<p>{new String(this.state.enableDate)}</p>
 				</form>
 			</div>
 		)

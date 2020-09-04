@@ -6,6 +6,7 @@ import CreateSchedule from './home/create_schedule'
 function App() {
   return (
     <div className="App">
+	  	<div class='bg'></div>
     	<CreateSchedule/>
 	</div>
   );
