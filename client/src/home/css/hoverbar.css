@@ -11,25 +11,25 @@
 }
 
 #mySidenav a:hover {
-  left: 0;
+  left : 0;
 }
 
-#about {
-  top: 60px;
+#top-schedule-1 {
+  bottom : 40px;
   background-color: #4CAF50;
 }
 
-#blog {
-  top: 100px;
+#top-schedule-2 {
+  bottom : 100px;
   background-color: #2196F3;
 }
 
-#projects {
-  top: 160px;
+#top-schedule-3 {
+  bottom : 160px;
   background-color: #f44336;
 }
 
-#contact {
-  top: 220px;
+#top-schedule-4 {
+  bottom : 220px;
   background-color: #555
 }

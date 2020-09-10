@@ -2,6 +2,7 @@ from flask import Blueprint
 from flask import request
 from flask_cors import CORS
 import pymongo
+import json
 
 scheduler = Blueprint("scheduler", __name__, template_folder='templates')
 CORS(scheduler)
@@ -46,8 +47,21 @@ def create_schedule():
 @scheduler.route('/list', methods = ['POST'])
 def list():
     my_collection = db['Schedules']
+    schedules = []
     all_docs = my_collection.find({})
 
-    print(all_docs)
+    for i in all_docs:
+        schedule = {}
 
-    return str(all_docs)
+        schedule['name'] = i['name']
+        schedule['type'] = i['type']
+
+        if(schedule['type'] != 'default'):
+            schedule['from'] = i['from']
+            schedule['to'] = i['to']
+
+        schedules.append(schedule)
+
+    print(schedules)
+
+    return json.dumps(schedules)

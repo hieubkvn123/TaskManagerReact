@@ -11,7 +11,6 @@
 	background-size : cover;
 	background-position : center center;
 	z-index:-10;
-	filter : blur(2px);
 }
 
 .App-logo {
