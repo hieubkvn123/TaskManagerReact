@@ -68,3 +68,14 @@ def list():
         schedules.append(schedule)
 
     return json.dumps(schedules)
+
+@scheduler.route("/delete", methods = ['POST'])
+def delete():
+    col = db['Schedules']
+    result = col.delete_one({'name' : request.form['schedule_name']})
+
+    if(result.deleted_count > 0):
+        return 'success'
+    else: 
+        return 'failed'
+
