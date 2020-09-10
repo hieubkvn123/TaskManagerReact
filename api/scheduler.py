@@ -3,9 +3,14 @@ from flask import request
 from flask_cors import CORS
 import pymongo
 import json
+import logging
 
 scheduler = Blueprint("scheduler", __name__, template_folder='templates')
 CORS(scheduler)
+
+### Set logging level to ERROR ###
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 ### Create a mongo client ###
 client = pymongo.MongoClient('mongodb://localhost:27017')
@@ -61,7 +66,5 @@ def list():
             schedule['to'] = i['to']
 
         schedules.append(schedule)
-
-    print(schedules)
 
     return json.dumps(schedules)
