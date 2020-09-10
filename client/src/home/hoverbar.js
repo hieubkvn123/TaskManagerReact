@@ -11,11 +11,33 @@ class ScheduleButton extends Component {
 	onClick(e){
 		e.preventDefault()
 
+		if(e.target.className == 'fa fa-close'){
+			var confirmed = window.confirm('Do you really want to delete schedule ' + e.target.id + '? ')
 
-		if(e.target.className == 'fa fa-edit'){
-			alert('Edit button clicked')
+			if(confirmed){
+				// Send a request to server to delete it
+				var schedule_name = e.target.id
+
+				var formData = new FormData()
+				formData.append("schedule_name", schedule_name)
+
+				axios({
+					method : 'post',
+					data : formData,
+					url : 'http://localhost:8080/scheduler/delete',
+					headers : {
+						'Content-Type':'multipart/form-data'
+					}
+				})
+				.then(response => response.data)
+				.then(response => {
+					alert(response)
+				})
+			}
 		}else{
-			alert('Delete button clicked')
+			// Basically show a modal dialog to let people modify schedule details
+			// then forward to server when submitting the form enclosed in the dialog
+			alert('Edit button clicked')
 		}
 	}
 
@@ -23,8 +45,8 @@ class ScheduleButton extends Component {
 		return (
 			<a href={this.props.href} id={this.props.id} name={this.props.text}>
 			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-				<button class='btn edit-button'><i class="fa fa-edit" onClick={this.onClick}></i></button>
-				<button class='btn del-button'><i class="fa fa-close" onClick={this.onClick}></i></button>
+				<button class='btn edit-button'><i id={this.props.text} class="fa fa-edit" onClick={this.onClick}></i></button>
+				<button class='btn del-button'><i id={this.props.text} class="fa fa-close" onClick={this.onClick}></i></button>
 				{this.props.text}
 			</a>
 		)
@@ -75,10 +97,10 @@ class HoverNavbar extends Component {
 	render = () => {
 		return (
 			<div id="mySidenav" class="sidenav">
-				{this.state.schedules.length >= 1 && <ScheduleButton href='/' id='top-schedule-1' text={this.state.schedules[0]}/>}
-				{this.state.schedules.length >= 2 && <ScheduleButton href='/' id='top-schedule-2' text={this.state.schedules[1]}/>}
-				{this.state.schedules.length >= 3 && <ScheduleButton href='/' id='top-schedule-3' text={this.state.schedules[2]}/>}
-				{this.state.schedules.length >= 4 && <ScheduleButton href='/' id='top-schedule-4' text={this.state.schedules[3]}/>}
+				{this.state.schedules.length >= 1 && <ScheduleButton href='#' id='top-schedule-1' text={this.state.schedules[0]}/>}
+				{this.state.schedules.length >= 2 && <ScheduleButton href='#' id='top-schedule-2' text={this.state.schedules[1]}/>}
+				{this.state.schedules.length >= 3 && <ScheduleButton href='#' id='top-schedule-3' text={this.state.schedules[2]}/>}
+				{this.state.schedules.length >= 4 && <ScheduleButton href='#' id='top-schedule-4' text={this.state.schedules[3]}/>}
 			</div>
 		)
 	}
