@@ -5,8 +5,34 @@
 	margin-top : 150px;
 	padding : 50px;
 	background-color : #001641;
-	border-radius : 50px;
+	border-radius : 8px;
 	box-shadow : 10px 25px #00161780;
+}
+
+#context-menu {
+	position : absolute;
+	z-index : 10;
+}
+
+.weekly-calendar {
+	width : 100%;
+	height : 100%;
+	background-color : #121417;
+	color : #fff;
+}
+
+.weekly-calendar th {
+	padding : 25px;
+	background-color : #ff984444;
+}
+
+.weekly-calendar td {
+	background-color : #55ff9850;
+}
+
+.weekly-calendar td:hover {
+	cursor : pointer;
+	background-color : #55ff98;
 }
 
 #create-schedule input, select{
