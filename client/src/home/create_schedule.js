@@ -16,14 +16,14 @@ class WeeklyCalendar extends Component {
 		this.time_slots = ['9:00 A.M - 12:00 P.M', '13:00 P.M - 16:00 P.M', '18:00 P.M - 21:00 P.M']
 		
 		this.context_menu = React.createRef()
+		this.modal_content = React.createRef()
 	}
 
-	componentWillMount() {
-		
+	componentDidMount () { 
+		console.log(window.innerHeight)
 	}
 
 	componentWillUnmount() {
-
 	}
 
 	openModal = () => {
@@ -41,14 +41,27 @@ class WeeklyCalendar extends Component {
 	handleContextMenu = (e) => {
 		e.preventDefault()
 
-		var x = e.pageX
-		var y = e.pageY 
+		// Get size from reference to modal content's body
+		var window_w = this.modal_content.current.clientWidth
+		var window_h = this.modal_content.current.clientHeight
+
+		console.log(window_w, window_h)
+
+		// Calculate the margin since now the context menu position is
+		// relative to the modal dialog not the page itself. So we need the margin
+		// of the modal dialog w.r.t the page
+		var margin_x = Math.floor((window.innerWidth - window_w) / 2)
+		var margin_y = Math.floor((window.innerHeight - window_h) / 2)
+
+		// final coordinate
+		var x = e.pageX - (margin_x)
+		var y = e.pageY - margin_y + 70 
 
 		this.context_menu.current.showMenu(x,y)
 	}
 	render = () => {
 		return (
-			<Modal show={this.state.isOpen} onHide={this.closeModal} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+			<Modal  show={this.state.isOpen} onHide={this.closeModal} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
 			  <ContextMenu ref={this.context_menu}/>
 			  <Modal.Header className={this.props.className} closeButton>
 				<Modal.Title id="contained-modal-title-vcenter">
@@ -56,7 +69,8 @@ class WeeklyCalendar extends Component {
 				</Modal.Title>
 			  </Modal.Header>
 			  <Modal.Body className={this.props.className}>
-			  	<table border='1'>
+			  	<div ref={this.modal_content}>
+				<table border='1'>
 					<tr>
 						<th onMouseEnter={this.disableMenu}>Date</th>
 						{
@@ -80,6 +94,7 @@ class WeeklyCalendar extends Component {
 						})
 					}
 				</table>
+				</div>
 			</Modal.Body>
 			  <Modal.Footer className={this.props.className}>
 				<Button onClick={this.closeModal}>Close</Button>

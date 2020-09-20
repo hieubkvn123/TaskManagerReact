@@ -19,7 +19,7 @@ class ContextMenu extends Component {
 		this.setState({
 			'show_menu' : true,
 			'xPos' : `${x}px`,
-			'yPos' : `${y}px`
+			'yPos' : `${y}px`,
 		})
 	}
 
