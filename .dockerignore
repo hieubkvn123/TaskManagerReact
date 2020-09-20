@@ -1,0 +1,5 @@
+node_modules
+client/node_modules
+api/__pycache__
+Dockerfile
+.dockerignore

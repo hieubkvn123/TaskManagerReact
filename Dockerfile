@@ -1,10 +1,19 @@
+FROM python:3
+WORKDIR /app/api
+COPY ./api .
+
+RUN pip install -r requirements.txt
+EXPOSE 3000
+
+CMD ["python", "./api/server.py"]
+
 FROM node:alpine
-WORKDIR '/app'
+WORKDIR /app/client
+COPY ./client .
+COPY ./client/package.json .
+COPY ./client/package-lock.json .
+EXPOSE 8080
 
-COPY client/package.json .
-RUN npm install --silent 
-COPY ./client ./client
-COPY ./api ./api
+RUN npm install
 
-CMD ["npm","start"]
-CMD [""]
+CMD ["npm", "run", "start"]
