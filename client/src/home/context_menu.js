@@ -1,10 +1,13 @@
 import React, {Component} from 'react'
+
+import 'bootstrap/dist/css/bootstrap.min.css'
 import './css/create_schedule_form.css'
 
 class ContextMenu extends Component {
 	constructor(props){
 		super(props)
 		this.state = {}
+		this.mouseLeave = this.mouseLeave.bind(this)
 	}
 
 	componentWillMount() {
@@ -15,25 +18,31 @@ class ContextMenu extends Component {
 
 	}
 
-	showMenu(x, y){
+	mouseLeave(){
+		this.setState({'show_menu' : false})
+	}
+
+	showMenu(x, y, time, date){
 		this.setState({
 			'show_menu' : true,
+			'current_time' : time,
+			'current_date' : date,
 			'xPos' : `${x}px`,
 			'yPos' : `${y}px`,
 		})
 	}
 
-	hideMenu(){
-		this.setState({'show_menu':false})
-	}
-
 	render = () => {
 		if(this.state.show_menu){
 			return (
-				<div style={{top:this.state.yPos, left:this.state.xPos}} id='context-menu'>
-					<li>{this.state.xPos}</li>
-					<li>{this.state.yPos}</li>
-					<li>Item 3</li>
+				<div onMouseLeave={this.mouseLeave} style={{top:this.state.yPos, left:this.state.xPos}} id='context-menu'>
+					<p>{this.state.current_date} - {this.state.current_time}</p>
+					<li>
+						<label for='activity'>Add Activity</label>
+						<input id='activity' type='text' placeholder='Activity' className='form-control'/>
+					</li>
+					<li>Expand horizontally</li>
+					<li>Expand vertically</li>
 				</div>
 			)
 		}else{

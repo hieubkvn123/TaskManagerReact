@@ -12,13 +12,24 @@
 #context-menu {
 	position : absolute;
 	z-index : 10;
-	padding : 15px;
-	margin : 15px;
+	color : white;
 	background-color : #00000080;
+}
+
+#context-menu p {
+	font-size : 11px;
+	padding : 8px;
+	background-color : #ff122380;
 }
 
 #context-menu li {
 	list-style-type : none;
+	padding : 12px;
+}
+
+#context-menu li:hover {
+	background-color : #1234ff80;
+	cursor : pointer;
 }
 
 .weekly-calendar {

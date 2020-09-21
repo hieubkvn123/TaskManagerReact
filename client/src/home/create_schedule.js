@@ -38,14 +38,13 @@ class WeeklyCalendar extends Component {
 		this.setState({isOpen : false})
 	}
 
+	setCurrentTimeDate = (e) => {}
+
 	handleContextMenu = (e) => {
 		e.preventDefault()
-
 		// Get size from reference to modal content's body
 		var window_w = this.modal_content.current.clientWidth
 		var window_h = this.modal_content.current.clientHeight
-
-		console.log(window_w, window_h)
 
 		// Calculate the margin since now the context menu position is
 		// relative to the modal dialog not the page itself. So we need the margin
@@ -57,7 +56,10 @@ class WeeklyCalendar extends Component {
 		var x = e.pageX - (margin_x)
 		var y = e.pageY - margin_y + 70 
 
-		this.context_menu.current.showMenu(x,y)
+		var current_time = this.time_slots[this.state.current_time]
+		var current_date = this.dates[this.state.current_date]
+
+		this.context_menu.current.showMenu(x,y, current_time, current_date)
 	}
 	render = () => {
 		return (
@@ -86,7 +88,10 @@ class WeeklyCalendar extends Component {
 									<th onMouseEnter={this.disableMenu}>{value}</th>
 									{
 										this.time_slots.map((value, time_index) => {
-											return (<td onContextMenu={this.handleContextMenu} date_index={date_index} time_index={time_index}></td>)
+											return (
+												<td onMouseEnter={()=>this.setState({'current_time' : time_index, 'current_date':date_index})} 
+												        onContextMenu={this.handleContextMenu}></td>
+											)
 										})
 									}
 								</tr>
