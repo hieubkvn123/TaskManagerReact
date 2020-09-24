@@ -30,6 +30,7 @@ def create_schedule():
     
         my_docs['name'] = request.form['name']
         my_docs['type'] = request.form['type']
+        my_docs['activities'] = json.loads(request.form['activities'])
 
         ### If this is not a default schedule ###
         if(request.form['type'] != 'default'):

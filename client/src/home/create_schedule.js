@@ -15,6 +15,7 @@ class WeeklyCalendar extends Component {
 		this.dates = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 		this.time_slots = ['9:00 A.M - 12:00 P.M', '13:00 P.M - 16:00 P.M', '18:00 P.M - 21:00 P.M']
 
+		this.onSubmit = this.onSubmit.bind(this)
 		this.context_menu = React.createRef()
 		this.modal_content = React.createRef()
 	}
@@ -36,13 +37,15 @@ class WeeklyCalendar extends Component {
 	componentWillUnmount() {
 	}
 
-	openModal = () => {
+	openModal = (data) => {
 		// check if schedule name is there
 		if(this.props.schedule == null){
 			alert('Please fill in schedule name ... ')
 		}else{
 			this.setState({ isOpen : true })
 		}
+
+		this.setState({'data' : data})
 	}
 	closeModal = () => {
 		this.setState({isOpen : false})
@@ -74,6 +77,45 @@ class WeeklyCalendar extends Component {
 		/* You can pass 'this' as a reference to other element's handler function */
 		this.context_menu.current.showMenu(x,y, current_time, current_date, this, current_activity) 
 	}
+	
+	onSubmit(e) {
+		e.preventDefault()
+
+		console.log(this.state)
+		var schedule_name = this.state.data['schedule_name']
+		var schedule_type = this.state.data['schedule_type']
+		var period_from = this.state.data['period_from']
+		var period_to = this.state.data['period_to']
+
+		var formData = new FormData()
+		formData.append('name', schedule_name)
+		formData.append('type', schedule_type)
+		formData.append('from', period_from)
+		formData.append('to', period_to)
+		formData.append('activities', JSON.stringify(this.state.activities))
+
+		axios({
+			method : 'post',
+			data : formData,
+			url : 'http://localhost:8080/scheduler/create',
+			headers : {
+				'Content-Type' : 'multipart/form-data'
+			}
+		}).then((response) => {
+			if(response.data == 'default_exists'){
+				alert('There can only be one default schedule, you can only modify it or delete then recreate')
+			}else if(response.data == 'success'){
+				alert('The schedule has been added successfully')
+			}else if(response.data == 'fail'){
+				alert('Some problem occurred while inserting this schedule, please try again later')
+			}
+		}).catch((err) => {
+			console.log(err)
+		})
+
+		this.closeModal()
+	}
+
 	render = () => {
 		return (
 			<Modal  show={this.state.isOpen} onHide={this.closeModal} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
@@ -118,7 +160,7 @@ class WeeklyCalendar extends Component {
 			</Modal.Body>
 			  <Modal.Footer className={this.props.className}>
 				<Button onClick={this.closeModal}>Close</Button>
-				<Button onclick={this.obSubmit}>Create Schedule</Button>
+				<Button onClick={this.onSubmit}>Create Schedule</Button>
 			  </Modal.Footer>
 			</Modal>
 		)
@@ -133,7 +175,6 @@ class CreateSchedule extends Component {
 
 		// You have to bind the events yourself
 		this.onChange = this.onChange.bind(this)
-		this.onSubmit = this.onSubmit.bind(this)
 	}
 
 	componentWillMount(){
@@ -142,41 +183,6 @@ class CreateSchedule extends Component {
 
 	componentWillUnmount(){
 
-	}
-
-	onSubmit(e) {
-		e.preventDefault()
-
-		console.log(this.state)
-		var schedule_name = this.state['schedule-name']
-		var schedule_type = this.state['schedule-type']
-		var period_from = this.state['schedule-time-from'] 
-		var period_to = this.state['schedule-time-to']
-
-		var formData = new FormData()
-		formData.append('name', schedule_name)
-		formData.append('type', schedule_type)
-		formData.append('from', period_from)
-		formData.append('to', period_to)
-
-		axios({
-			method : 'post',
-			data : formData,
-			url : 'http://localhost:8080/scheduler/create',
-			headers : {
-				'Content-Type' : 'multipart/form-data'
-			}
-		}).then((response) => {
-			if(response.data == 'default_exists'){
-				alert('There can only be one default schedule, you can only modify it or delete then recreate')
-			}else if(response.data == 'success'){
-				alert('The schedule has been added successfully')
-			}else if(response.data == 'fail'){
-				alert('Some problem occurred while inserting this schedule, please try again later')
-			}
-		}).catch((err) => {
-			console.log(err)
-		})
 	}
 
 	onChange(e) {
@@ -194,7 +200,19 @@ class CreateSchedule extends Component {
 	}
 
 	openModal = () => {
-		this.weeklyCalendar.current.openModal()
+		var schedule_name = this.state['schedule-name']
+		var schedule_type = this.state['schedule-type']
+		var period_from = this.state['schedule-time-from'] 
+		var period_to = this.state['schedule-time-to']
+
+		var data = {
+			'schedule_name' : schedule_name,
+			'schedule_type' : schedule_type,
+			'period_from' : period_from,
+			'period_to' : period_to
+		}
+
+		this.weeklyCalendar.current.openModal(data)
 	}
 
 	// Create schedule, there will be 2 types of schedule
