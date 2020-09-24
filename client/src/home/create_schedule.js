@@ -14,13 +14,23 @@ class WeeklyCalendar extends Component {
 		this.state = { isOpen : false }
 		this.dates = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 		this.time_slots = ['9:00 A.M - 12:00 P.M', '13:00 P.M - 16:00 P.M', '18:00 P.M - 21:00 P.M']
-		
+
 		this.context_menu = React.createRef()
 		this.modal_content = React.createRef()
 	}
 
-	componentDidMount () { 
-		console.log(window.innerHeight)
+	componentWillMount () { 
+		var activities = []
+
+		for (var i = 0; i < this.dates.length; i++){
+			activities.push([])
+
+			for (var j = 0; j < this.time_slots.length; j++){
+				activities[i].push(null)
+			}
+		}
+
+		this.setState({'activities' : activities})
 	}
 
 	componentWillUnmount() {
@@ -59,7 +69,10 @@ class WeeklyCalendar extends Component {
 		var current_time = this.time_slots[this.state.current_time]
 		var current_date = this.dates[this.state.current_date]
 
-		this.context_menu.current.showMenu(x,y, current_time, current_date)
+		var current_activity = this.state.activities[this.state.current_date][this.state.current_time]
+	
+		/* You can pass 'this' as a reference to other element's handler function */
+		this.context_menu.current.showMenu(x,y, current_time, current_date, this, current_activity) 
 	}
 	render = () => {
 		return (
@@ -90,7 +103,9 @@ class WeeklyCalendar extends Component {
 										this.time_slots.map((value, time_index) => {
 											return (
 												<td onMouseEnter={()=>this.setState({'current_time' : time_index, 'current_date':date_index})} 
-												        onContextMenu={this.handleContextMenu}></td>
+												        onContextMenu={this.handleContextMenu}> 
+													{this.state.activities[date_index][time_index]}
+												</td>
 											)
 										})
 									}
