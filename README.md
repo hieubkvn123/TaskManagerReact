@@ -6,6 +6,6 @@
 	`
 
 2. Run the docker image :
-	'console
+	`console
 		sudo docker run -it -p 80:3000 test
-	'
+	`
