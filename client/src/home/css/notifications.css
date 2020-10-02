@@ -1,6 +1,6 @@
 .notification-bar {
 	position : absolute;
-	top : 8px;
+	bottom : 8px;
 	right : 8px;
 	width : 20%;
 	z-index : 10;
