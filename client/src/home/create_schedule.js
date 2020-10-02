@@ -13,7 +13,7 @@ class WeeklyCalendar extends Component {
 		console.log(props.open)
 		this.state = { isOpen : false }
 		this.dates = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-		this.time_slots = ['9:00 A.M - 12:00 P.M', '13:00 P.M - 16:00 P.M', '18:00 P.M - 21:00 P.M']
+		this.time_slots = ['9:00 a.m - 12:00 p.m', '13:00 p.m - 16:00 p.m', '18:00 p.m - 21:00 p.m']
 
 		this.onSubmit = this.onSubmit.bind(this)
 		this.context_menu = React.createRef()
@@ -49,6 +49,20 @@ class WeeklyCalendar extends Component {
 	}
 	closeModal = () => {
 		this.setState({isOpen : false})
+	}
+
+	reset = () => {
+		var activities = []
+
+		for (var i = 0; i < this.dates.length; i++){
+			activities.push([])
+
+			for (var j = 0; j < this.time_slots.length; j++){
+				activities[i].push(null)
+			}
+		}
+
+		this.setState({'activities' : activities})
 	}
 
 	setCurrentTimeDate = (e) => {}
@@ -159,7 +173,7 @@ class WeeklyCalendar extends Component {
 				</div>
 			</Modal.Body>
 			  <Modal.Footer className={this.props.className}>
-				<Button onClick={this.closeModal}>Close</Button>
+				<Button onClick={this.reset}>Reset</Button>
 				<Button onClick={this.onSubmit}>Create Schedule</Button>
 			  </Modal.Footer>
 			</Modal>

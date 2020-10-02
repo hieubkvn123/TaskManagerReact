@@ -1,9 +1,11 @@
+import pymongo
+import json
+import datetime
+import logging
+
 from flask import Blueprint
 from flask import request
 from flask_cors import CORS
-import pymongo
-import json
-import logging
 
 scheduler = Blueprint("scheduler", __name__, template_folder='templates')
 CORS(scheduler)
@@ -79,4 +81,40 @@ def delete():
         return 'success'
     else: 
         return 'failed'
+
+@scheduler.route('/get_current_activity', methods=['POST'])
+def get_current_activity():
+    ### check all none-default schedules ###
+    col = db['Schedules']
+    today = datetime.datetime.now()
+
+    ### find all names and types ###
+    current_schedule = None
+    activities = 'no_activity' 
+    for entry in col.find({}):
+        if(entry['type'] == 'default'):
+            current_schedule = entry['name']
+            activities = entry['activities']
+
+        if(entry['type'] != 'default'):
+            from_ = datetime.datetime.strptime(entry['from'], '%Y-%m-%d')
+            to_ = datetime.datetime.strptime(entry['to'], '%Y-%m-%d')
+
+            if(today > from_ and today < to_):
+                current_schedule = entry['name']
+                activities = entry['activities']
+
+    ### Check what is the current time slot ###
+    time_index = 0
+    if(today.hour > 13 and today.hour < 16):
+        time_index = 1
+    elif(today.hour > 18 and today.hour < 21):
+        time_index = 2
+
+    ### Check what day is it in the schedule ###
+    date_index = today.today().weekday()
+
+    current_activity = activities[date_index][time_index]
+
+    return current_activity
 
