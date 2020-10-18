@@ -2,6 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 # from history import history 
 from scheduler import scheduler
+from reminder import reminder
 
 PORT = 8080
 app = Flask(__name__)
@@ -14,6 +15,7 @@ app = Flask(__name__)
 '''
 #app.register_blueprint(History)
 app.register_blueprint(scheduler, url_prefix='/scheduler')
+app.register_blueprint(reminder, url_prefix='/reminder')
 CORS(app)
 
 @app.route('/')

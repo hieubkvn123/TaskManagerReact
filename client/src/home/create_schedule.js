@@ -81,7 +81,7 @@ class WeeklyCalendar extends Component {
 
 		// final coordinate
 		var x = e.pageX - (margin_x)
-		var y = e.pageY - margin_y + 70 
+		var y = e.pageY - margin_y
 
 		var current_time = this.time_slots[this.state.current_time]
 		var current_date = this.dates[this.state.current_date]
