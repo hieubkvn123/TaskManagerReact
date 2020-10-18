@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom'
 import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './css/notifications.css'
-import $ from 'jquery'
-import { fadeInUp, fadeOutUp} from 'react-animations'
+import { fadeInDown, fadeOutUp} from 'react-animations'
 import Radium, { StyleRoot } from 'radium'
 
 class Notification extends Component {
 	constructor(props){
 		super(props)
+
 		this.componentWillMount = this.componentWillMount.bind(this)
 		this.onMouseEnter = this.onMouseEnter.bind(this)
 		this.onMouseLeave = this.onMouseLeave.bind(this)
@@ -19,7 +19,7 @@ class Notification extends Component {
 	componentWillMount(){
 		this.setState({'animation' : {
 				animation : 'x 2s',
-				animationName : Radium.keyframes(fadeInUp, 'fadeInUp')
+				animationName : Radium.keyframes(fadeInDown, 'fadeInDown')
 			}
 		})
 
@@ -68,12 +68,22 @@ class Notification extends Component {
 					onMouseEnter={this.onMouseEnter} 
 					onMouseLeave={this.onMouseLeave}
 					style={{
-						bottom : '8px'
+						bottom : this.props.bottom + "vh"
 					}}
 				>
 					<StyleRoot>
-						<div className='notification-item' style={this.state.animation} id='item-1'>
-							<span>Current Activity :<br/> {this.props.text}</span>
+						<div className={`notification-item ${this.props.type}`} style={this.state.animation} id='item-1'>
+							<span>
+							{
+								this.props.text.split('\n').map((value, index)=>{
+									var notification_id = 'info'
+									if(index == 0){
+										notification_id = 'header'
+									}
+									return (<span id={notification_id}>{value}<br/></span>)
+								})
+							}
+							</span>
 						</div>	
 					</StyleRoot>
 				</div>

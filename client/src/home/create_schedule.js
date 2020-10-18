@@ -95,7 +95,6 @@ class WeeklyCalendar extends Component {
 	onSubmit(e) {
 		e.preventDefault()
 
-		console.log(this.state)
 		var schedule_name = this.state.data['schedule_name']
 		var schedule_type = this.state.data['schedule_type']
 		var period_from = this.state.data['period_from']
@@ -118,6 +117,8 @@ class WeeklyCalendar extends Component {
 		}).then((response) => {
 			if(response.data == 'default_exists'){
 				alert('There can only be one default schedule, you can only modify it or delete then recreate')
+			}else if(response.data == 'schedule_exists'){
+				alert('The schedule name has already existed, please choose another name')
 			}else if(response.data == 'success'){
 				alert('The schedule has been added successfully')
 			}else if(response.data == 'fail'){

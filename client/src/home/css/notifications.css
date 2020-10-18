@@ -8,13 +8,38 @@
 
 .notification-bar .notification-item {
 	width : 100%;
-	height : 10vh;
+	height : 11vh;
 	display : block;
 	padding : 8px;
-	background-color:#464c55;
-	border-radius : 3px;
+	box-shadow : 5px 5px #00000080;
+	color : white;
+	margin-bottom : 8px;
+}
+
+.activity {
+	background-color: #29b6f6;
+}
+
+.reminder {
+	background-color:#a64452;
 }
 
 .notification-bar {
 	cursor : pointer;
+}
+
+.notification-item > span {
+	font-size : 14px;
+	float : left;
+	text-align : left;
+}
+
+.reminder   #header {
+	font-weight : bolder;
+	color : red;
+}
+
+.activity   #header {
+	font-weight : bolder;
+	color : blue;
 }

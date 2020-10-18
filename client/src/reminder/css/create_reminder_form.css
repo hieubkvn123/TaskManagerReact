@@ -1,0 +1,38 @@
+#create-reminder {
+	width : 40%;
+	float : right;
+	margin-right : 100px;
+	margin-top : 80px;
+	padding : 30px;
+	background-color : #001641;
+	border-radius : 8px;
+	box-shadow : 10px 25px #00164180;
+}
+
+#create-reminder label {
+	float : left;
+	font-weight : bolder;
+	text-decoration : underline;
+	font-family : monospace;
+	padding  : 8px;
+	color : red;
+}
+
+#create-reminder input, select {
+	width : 100%;
+	margin-top : 20px;
+	margin-bottom : 20px;
+}
+
+#create-reminder select {
+	appearance : none;
+	-webkit-appearance : none;
+}
+
+#create-reminder #submit {
+	font-family : monospace;
+	font-style : bold;
+	font-size : 20px;
+	margin-bottom : 0;
+	width : 100%;	
+}

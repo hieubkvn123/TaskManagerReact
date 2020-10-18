@@ -34,6 +34,11 @@ def create_schedule():
         my_docs['type'] = request.form['type']
         my_docs['activities'] = json.loads(request.form['activities'])
 
+        ### Check if there is a name collision in existing schedules ###
+        check = my_collection.count_documents(filter={'name' : my_docs['name']})
+        if(check > 0):
+            return 'schedule_exists'
+
         ### If this is not a default schedule ###
         if(request.form['type'] != 'default'):
             my_docs['from']  = request.form['from']
@@ -105,16 +110,30 @@ def get_current_activity():
                 activities = entry['activities']
 
     ### Check what is the current time slot ###
-    time_index = 0
+    time_index = None
+    time_str = 'None'
+    if(today.hour > 9 and today.hour < 12):
+        time_index = 0
+        time_str = '09:00 A.M to 12:00 P.M'
     if(today.hour > 13 and today.hour < 16):
         time_index = 1
+        time_str = '13:00 P.M to 16:00 P.M'
     elif(today.hour > 18 and today.hour < 21):
         time_index = 2
+        time_str = '18:00 P.M to 21:00 P.M'
 
     ### Check what day is it in the schedule ###
     date_index = today.today().weekday()
 
-    current_activity = activities[date_index][time_index]
+    if(time_index is not None):
+        current_activity = activities[date_index][time_index]
+    else:
+        current_activity = 'No Activity'
 
-    return current_activity
+    object_ = {}
+    object_['current_activity'] = current_activity 
+    object_['current_schedule'] = current_schedule
+    object_['time'] = time_str
+
+    return json.dumps(object_)
 

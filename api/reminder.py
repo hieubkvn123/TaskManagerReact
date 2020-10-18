@@ -29,12 +29,34 @@ db = client['productivity']
 
 def get_datetime_difference(d1, d2):
     diff = (d1 - d2).seconds
-    days = diff // 86400
-    hours = (diff - days * 86400) // 3600
-    minutes = (diff - days * 86400 - hours * 3600) // 60
-    seconds = diff - days * 86400 - hours * 3600 - minutes * 60
+    days = (d1 - d2).days
+
+    if(days is None):
+        days = 0
+
+    hours = diff // 3600
+    minutes = (diff - hours * 3600) // 60
+    seconds = diff - hours * 3600 - minutes * 60
 
     return days, hours, minutes, seconds
+
+@reminder.route('/create', methods=['POST'])
+def create():
+    if(request.method == 'POST'):
+        my_doc = {}
+        my_collection = db['Reminders']
+        
+        my_doc['title'] = request.form['reminder-title']
+        my_doc['type'] = request.form['reminder-type']
+        my_doc['date'] = request.form['reminder-date']
+        my_doc['time'] = request.form['reminder-time']
+
+        result = my_collection.insert_one(my_doc)
+
+        if(result.inserted_id):
+            return 'success'
+        else:
+            return 'fail'
 
 @reminder.route('/list', methods=['POST'])
 def get_current_reminder():
@@ -57,13 +79,11 @@ def get_current_reminder():
             reminder = {}
             reminder['title'] = i['title']
             reminder_day = i['date'] + ' ' + i['time']
-            reminder_day = datetime.datetime.strptime(reminder_day, "%Y-%m-%d %H:%M:%S") 
+            reminder_day = datetime.datetime.strptime(reminder_day, "%Y-%m-%d %H:%M") 
             days, hours, minutes, seconds = get_datetime_difference(reminder_day, datetime.datetime.now())
 
             reminder['time_remain'] = {'days': days, 'hours':hours, 'minutes':minutes,'seconds':seconds}
             reminders.append(reminder)
 
-        print('Sending to server')
-        print(reminders)
         return json.dumps(reminders)
         
